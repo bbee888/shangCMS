@@ -1,0 +1,202 @@
+{include file="public/top" /}
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+
+        {include file="public/header" /}
+
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <!--面包屑导航-->
+                <div class="layui-card layadmin-header">
+                    <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                        <a href="{:url('Index/index')}">主页</a><span lay-separator="">/</span>
+                        <a><cite>文章列表</cite></a>
+                    </div>
+                </div>
+                <div class="layui-fluid">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <!--<form class="layui-form layui-form-pane" action="/index.php/admin/article/index.html"-->
+                                <!--method="get">-->
+                                <!--<div class="layui-inline">-->
+                                    <!--<label class="layui-form-label">分类</label>-->
+                                    <!--<div class="layui-input-inline">-->
+                                        <!--<select name="cid">-->
+                                            <!--<option value="0">全部</option>-->
+                                            <!--<option value="1"> 分类一</option>-->
+                                        <!--</select>-->
+                                        <!--<div class="layui-unselect layui-form-select">-->
+                                            <!--<div class="layui-select-title"><input type="text" placeholder="全部" value="全部"-->
+                                                    <!--readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div>-->
+                                            <!--<dl class="layui-anim layui-anim-upbit">-->
+                                                <!--<dd lay-value="0" class="layui-this">全部</dd>-->
+                                                <!--<dd lay-value="1" class=""> 分类一</dd>-->
+                                            <!--</dl>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="layui-inline">-->
+                                    <!--<label class="layui-form-label">关键词</label>-->
+                                    <!--<div class="layui-input-inline">-->
+                                        <!--<input type="text" name="keyword" value="" placeholder="请输入关键词" class="layui-input">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="layui-inline">-->
+                                    <!--<button class="layui-btn">搜索</button>-->
+                                <!--</div>-->
+                            <!--</form>-->
+
+                            <table class="layui-hide" id="articlelist" lay-filter="articlelist"></table>
+                            <script type="text/html" id="articleAddBtn">
+                                <div class="layui-btn-container">
+                                  <a href="{:url('Article/add')}" class="layui-btn">添加文章</a>
+                                </div>
+                              </script>
+                            <script type="text/html" id="articleBtn">
+                                <a class="layui-btn layui-btn-xs" href="{:url('edit')}?id={{d.id}}">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="articleDel">删除</a>
+                            </script>
+                            <script type="text/html" id="status">
+                                {{#  if(d.status == 1){ }}
+                                  <button type="button" class="layui-btn layui-btn-normal layui-btn-xs" lay-event="adminDel">显示</button>
+                                {{#  } else { }}
+                                  <button type="button" class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="adminDel">不显示</button>
+                                {{#  } }}
+                                </script>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {include file="public/footer" /}
+    </div>
+    <script src="__LAYUI__/layui.js"></script>
+    <script src="__ADMIN__/js/main.js"></script>
+    <script>
+        var article_del = "{:url('Article/delete')}";
+
+        layui.use(['jquery', 'table', 'element'], function () {
+            var table = layui.table,
+                $ = layui.$,
+                element = layui.element;
+
+            table.render({
+                elem: '#articlelist',
+                url: "{:url('article/articlelist')}",
+                toolbar: '#articleAddBtn',
+                cols: [
+                    [{
+                        type: 'numbers',
+                        title: '序号',
+                        width: 80,
+                        align: 'center'
+                    }, {
+                        field: 'title',
+                        title: '文章名称'
+                    },  {
+                        field: 'catname',
+                        title: '所属栏目',
+                        width: 100,
+                        align: 'center'
+                    },{
+                        field: 'views',
+                        title: '浏览数',
+                        width: 80,
+                        edit: 'text',
+                        align: 'center'
+                    },{
+                        field: 'status',
+                        title: '状态',
+                        width: 80,
+                        align: 'center',
+                        templet: '#status',
+                    }, {
+                        field: 'updatetime',
+                        title: '更新时间',
+                        width: 200,
+                        align: 'center',
+                        templet: function (d) {
+                            return stampToTime(d.updatetime)
+                        }
+                    }, {
+                        title: '操作',
+                        toolbar: '#articleBtn',
+                        width: 160,
+                        align: 'center'
+                    }]
+                ],
+                page: true,
+                limits: [20, 40, 60, 80, 100],
+                cellMinWidth: 80,
+                text: "对不起，加载出现异常！"
+            });
+
+            //修改点击数
+            table.on('edit(articlelist)', function (obj) {
+                var views = obj.value //得到修改后的值,
+                    data = obj.data //得到所在行所有键值,
+                    field = obj.field; //得到字段
+                //layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+                $.ajax({
+                    type: "POST",
+                    url: "{:url('article/views')}",
+                    data: {
+                        'id': data.id,
+                        'views': views
+                    },
+                    
+                    error: function (res) {
+                        layer.msg('服务器出错，请稍后重新操作！');
+                        return false;
+                    }
+                });
+            });
+
+            //监听锁定操作
+            // form.on('checkbox(articleShowBox)', function (obj) {
+            //     layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+            // });
+
+            //监听工具条
+            table.on('tool(articlelist)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'articleDel') {
+                    layer.confirm('真的要删除?', function (index) {
+                        // console.log(data);
+                        $.ajax({
+                            type: "POST",
+                            url: article_del,
+                            data: {
+                                "id": data.id
+                            },
+                            success: function (Data) {
+                                if (Data.status == 1) {
+                                    location.reload();
+                                    layer.msg("删除成功", {
+                                        icon: 6
+                                    });
+                                } else {
+                                    layer.msg("删除失败", {
+                                        icon: 5
+                                    });
+                                }
+                            },
+                            error: function () {
+                                alert("出现错误");
+                                return false;
+                            }
+                        }) //ajax结束
+                    });
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

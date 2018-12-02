@@ -1,0 +1,104 @@
+{include file="public/top" /}
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+
+        {include file="public/header" /}
+
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <!--面包屑导航-->
+                <div class="layui-card layadmin-header">
+                    <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                        <a href="{:url('Index/index')}">主页</a><span lay-separator="">/</span>
+                        <a><cite>栏目列表</cite></a>
+                    </div>
+                </div>
+                <div class="layui-fluid">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-btn-group">
+                                <a href="{:url('Category/add')}" class="layui-btn"><i class="layui-icon">&#xe608;</i>添加栏目</a>
+                                <!-- <button class="layui-btn">批量添加</button>
+                                <button class="layui-btn">开发中</button> -->
+                            </div>
+
+                            <table class="layui-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;text-align: center">栏目ID</th>
+                                        <th>栏目名称</th>
+                                        <th style="width: 60px;text-align: center">文章数</th>
+                                        <th style="width: 100px;">栏目类型</th>
+                                        <th style="width: 260px; text-align: center">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name="categorylist" id="vo"}
+                                    <tr>
+                                        <td style="text-align: center">{$vo.catid}</td>
+                                        <td>{neq name="vo.level" value="0"}|{/neq}
+                                            <?php echo str_repeat('-',$vo['level']*5)?> {$vo.catname}</td>
+                                        <td style="text-align: center">{$vo.acount}</td>
+                                        <td>{if condition="$vo.type eq 0"}普通栏目{else /}单页面{/if}</td>
+                                        <td style="text-align: center">
+                                            <a href="{:url('category/add',['catid'=>$vo['catid']])}" class="layui-btn layui-btn-xs">添加子栏目</a>
+                                            <a href="{:url('category/edit',['catid'=>$vo['catid']])}" class="layui-btn layui-btn-normal layui-btn-xs">编辑</a>
+                                            <a href="javascript:del({$vo['catid']})" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
+                                        </td>
+                                    </tr>
+                                    {/volist}
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {include file="public/footer" /}
+    </div>
+    <script src="__LAYUI__/layui.js"></script>
+    <script src="__ADMIN__/js/main.js"></script>
+    <script>
+        var category_del = "{:url('category/delete')}";
+
+        layui.use(['jquery', 'table', 'element'], function () {
+            var table = layui.table,
+                $ = layui.jquery,
+                element = layui.element;
+
+
+        });
+
+        function del(id) {
+            layer.confirm('你确定要删除该栏目及其子栏目吗？', {icon: 3}, function (index) {
+                $.ajax({
+                    type: "POST",
+                    url: category_del,
+                    data: {
+                        "catid": id
+                    },
+                    success: function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg, {time: 2000, icon: 6});
+                            location.reload();
+                        } else {
+                            layer.msg(res.msg, {time: 2000, icon: 5});
+                        }
+                    },
+                    error: function () {
+                        alert("出现错误");
+                        return false;
+                    }
+                }) //ajax结束
+            });
+        }
+    </script>
+</body>
+
+</html>

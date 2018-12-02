@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理系统 - shangCMS</title>
+    <link rel="stylesheet" href="__LAYUI__/css/layui.css">
+    <link rel="stylesheet" href="__ADMIN__/css/style.css">
+    <script src="__ADMIN__/js/jquery.min.js"></script>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+
+        {include file="public/header" /}
+
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+
+                <div class="layui-fluid">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md8">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md6">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">快捷方式</div>
+                                        <div class="layui-card-body">
+
+                                            <div class="layui-carousel layadmin-carousel layadmin-shortcut" lay-anim=""
+                                                lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                                                <div carousel-item="">
+                                                    <ul class="layui-row layui-col-space10 layui-this">
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('Index/index')}">
+                                                                <i class="layui-icon layui-icon-home"></i>
+                                                                <cite>主页</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('Category/index')}">
+                                                                <i class="layui-icon layui-icon-list"></i>
+                                                                <cite>栏目管理</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('Article/index')}">
+                                                                <i class="layui-icon layui-icon-read"></i>
+                                                                <cite>文章管理</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('Page/index')}">
+                                                                <i class="layui-icon layui-icon-console"></i>
+                                                                <cite>单网页</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('Admin/index')}">
+                                                                <i class="layui-icon layui-icon-user"></i>
+                                                                <cite>管理员管理</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('Flink/index')}">
+                                                                <i class="layui-icon layui-icon-link"></i>
+                                                                <cite>友情链接</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="">
+                                                                <i class="layui-icon layui-icon-delete"></i>
+                                                                <cite>清除缓存</cite>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs3">
+                                                            <a href="{:url('System/index')}">
+                                                                <i class="layui-icon layui-icon-set"></i>
+                                                                <cite>系统设置</cite>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">数据统计</div>
+                                        <div class="layui-card-body">
+
+                                            <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim=""
+                                                lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                                                <div carousel-item="">
+                                                    <ul class="layui-row layui-col-space10 layui-this">
+                                                        <li class="layui-col-xs6">
+                                                            <a href="{:url('Category/index')}" class="layadmin-backlog-body">
+                                                                <h3>栏目</h3>
+                                                                <p><cite>{$count.category}</cite></p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs6">
+                                                            <a href="{:url('Admin/index')}" class="layadmin-backlog-body">
+                                                                <h3>文章</h3>
+                                                                <p><cite>{$count.article}</cite></p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs6">
+                                                            <a href="{:url('Flink/index')}" class="layadmin-backlog-body">
+                                                                <h3>友情链接</h3>
+                                                                <p><cite>{$count.flink}</cite></p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="layui-col-xs6">
+                                                            <a href="{:url('Admin/index')}" class="layadmin-backlog-body">
+                                                                <h3>管理员</h3>
+                                                                <p><cite>{$count.admin}</cite></p>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+
+                                    <div class="layui-card">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-col-md4">
+                            <div class="layui-card">
+                                <div class="layui-card-header">个人信息</div>
+                                <div class="layui-card-body">
+                                    <p>您好！{$Request.session.username}</p>
+
+                                    <p>上次登录时间：{$Request.session.logintime|date='Y-m-d H:i:s',###}</p>
+                                    <p>上次登录IP：{$Request.session.loginip}</p>
+                                </div>
+                            </div>
+
+                            <div class="layui-card">
+                                <div class="layui-card-header">系统信息</div>
+                                <div class="layui-card-body layui-text">
+                                    <table class="layui-table">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>当前版本</td>
+                                                <td>{$sys_info.version}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>操作系统</td>
+                                                <td>{$sys_info.os}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>服务器软件</td>
+                                                <td>{$sys_info.web_server} / {$sys_info.phpv}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MySQL版本</td>
+                                                <td>{$sys_info.mysql_version}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>上传文件</td>
+                                                <td>{$sys_info.fileupload}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>最大执行时间</td>
+                                                <td>{$sys_info.max_ex_time}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>最大占用内存</td>
+                                                <td>{$sys_info.memory_limit}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>GD 版本:</td>
+                                                <td>{$sys_info.gdinfo}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Zlib支持:</td>
+                                                <td>{$sys_info.zlib}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Curl支持:</td>
+                                                <td>{$sys_info.curl}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    作者心语
+                                    <i class="layui-icon layui-icon-tips" lay-tips="要支持的噢" lay-offset="5"></i>
+                                </div>
+                                <div class="layui-card-body">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {include file="public/footer" /}
+    </div>
+    <script src="__LAYUI__/layui.js"></script>
+    <script src="__ADMIN__/js/main.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use(['element','layer'], function () {
+            var element = layui.element,
+            layer = layui.layer;
+            
+
+        });
+    </script>
+</body>
+
+</html>

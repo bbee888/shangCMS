@@ -1,0 +1,110 @@
+{include file="public/top" /}
+
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin">
+
+			{include file="public/header" /}
+
+			<div class="layui-body" id="LAY_app_body">
+				<div class="layadmin-tabsbody-item layui-show">
+					<!--面包屑导航-->
+					<div class="layui-card layadmin-header">
+						<div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+							<a href="{:url('index/index')}">主页</a><span lay-separator="">/</span>
+							<a><cite>单网页管理</cite></a>
+						</div>
+					</div>
+					<div class="layui-fluid">
+						<div class="layui-card">
+							<div class="layui-card-body">
+								
+								<div class="layui-form" id="table-list">
+									<table class="layui-table">
+										<colgroup>
+											<col width="80">
+											<col>
+											<col class="hidden-xs" width="200">
+											<col width="200">
+										</colgroup>
+										<thead>
+											<tr>
+												<th class="hidden-xs">栏目ID</th>
+												<th>单网页名称</th>
+												<th>发布时间</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												{volist name="pagelist" id="vo"}
+												<td class="hidden-xs">{$vo.catid}</td>
+												<td>{neq name="vo.level" value="0"}|{/neq}<?php echo str_repeat('-',$vo['level']*5)?> {$vo.catname}</td>
+												<td>{$vo.createtime|date='Y-m-d H:i:s',###}</td>
+												<td>
+													<div class="layui-inline">
+														<a href="{:url('category/add',['catid'=>$vo['catid'],'type'=>1])}" class="layui-btn layui-btn-xs">添加子栏目</a>
+														<a href="{:url('page/edit',['catid'=>$vo['catid']])}" class="layui-btn layui-btn-xs layui-btn-normal">修改</a>
+														<a href="javascript:del({$vo['catid']})" class="layui-btn layui-btn-xs layui-btn-danger">删除</a>
+													</div>
+												</td>
+											</tr>
+											{/volist}
+											
+
+										</tbody>
+									</table>
+									<div class="page-wrap">
+										
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			{include file="public/footer" /}
+		</div>
+		<script src="__LAYUI__/layui.js"></script>
+		<script src="__ADMIN__/js/main.js"></script>
+		<script>
+
+			layui.use(['jquery', 'table','element'], function() {
+				var table = layui.table,
+					$ = layui.jquery,
+					element = layui.element;
+
+				//修改状态
+				$('#table-list').on('click', '.table-list-status', function() {
+					var That = $(this);
+					var status = That.attr('data-status');
+					var id = That.parent().attr('data-id');
+					if(status == 1) {
+						That.removeClass('layui-btn-normal').addClass('layui-btn-warm').html('隐藏').attr('data-status', 2);
+					} else if(status == 2) {
+						That.removeClass('layui-btn-warm').addClass('layui-btn-normal').html('显示').attr('data-status', 1);
+
+					}
+				})
+
+			});
+
+			function del(id) {
+        layer.confirm('你确定要删除单页面吗？', {icon: 3}, function (index) {
+            $.post('{:url("page/delete")}', {catid: id}, function (data) {
+                if (data.status === 1) {
+                    location.reload();
+					layer.msg(data.msg, {icon: 6});
+                }else{
+                    layer.msg(data.msg, {icon:5});
+                }
+            });
+            layer.close(index);
+        });
+    }
+		</script>
+	</body>
+
+</html>

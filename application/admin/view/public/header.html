@@ -1,0 +1,56 @@
+<script>
+    var clearCache = "{:url('Common/clear')}";
+    var logout_url = "{:url('login/logout')}";
+</script>
+<div class="layui-header">
+    <div class="layui-logo">shangCMS</div>
+    <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="{:url('index/index')}">控制台</a></li>
+        <li class="layui-nav-item" lay-unselect="">
+            <a href="javascript:;">
+                <cite>快捷操作</cite>
+                <span class="layui-nav-more"></span></a>
+            <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                <dd><a href="{:url('Category/add')}">添加栏目</a> </dd>
+                <dd><a href="{:url('Article/add')}">添加文章</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="javascript:;" id="clear-cache"><i class="layui-icon layui-icon-tree">清除缓存</i></a></li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item" lay-unselect="">
+            <a href="javascript:;">
+                <cite>{$Request.session.username}</cite>
+                <span class="layui-nav-more"></span></a>
+            <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                <dd><a lay-href="">基本资料</a> </dd>
+                <dd><a lay-href="">修改密码</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="{:url('login/logout')}">退出</a></li>
+    </ul>
+</div>
+
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+
+            
+            <li class="layui-nav-item {if condition='$controller eq "index"'}layui-this{/if}"><a href="{:url('index/index')}"><i class="layui-icon layui-icon-home"></i> 仪表盘</a></li>
+            
+            <li class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:;">栏目管理<span class="layui-nav-more"></span></a>
+                <dl class="layui-nav-child">
+                    <dd class="{if condition='($controller eq "category") AND ($action eq "index")'}layui-this{/if}"><a href="{:url('category/index')}"><i class="layui-icon layui-icon-list"></i> 栏目列表</a></dd>
+                    <dd class="{if condition='($controller eq "category") AND ($action eq "add")'}layui-this{/if}"><a href="{:url('category/add')}"><i class="layui-icon layui-icon-add-circle"></i> 添加栏目</a></dd>
+                    <dd class="{if condition='$controller eq "page"'}layui-this{/if}"><a href="{:url('Page/index')}"><i class="layui-icon layui-icon-console"></i> 单网页</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item {if condition='$controller eq "article"'}layui-this{/if}"><a href="{:url('article/index')}"><i class="layui-icon layui-icon-read"></i> 文章管理</a></li>
+            <li class="layui-nav-item {if condition='$controller eq "flink"'}layui-this{/if}"><a href="{:url('flink/index')}"><i class="layui-icon layui-icon-link"></i> 友情链接</a></li>
+            <li class="layui-nav-item {if condition='$controller eq "admin"'}layui-this{/if}"><a href="{:url('admin/index')}"><i class="layui-icon layui-icon-user"></i> 管理员管理</a></li>
+            <li class="layui-nav-item {if condition='$controller eq "system"'}layui-this{/if}"><a href="{:url('System/index')}"><i class="layui-icon layui-icon-set"></i> 系统设置</a></li>
+        </ul>
+    </div>
+</div>

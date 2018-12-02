@@ -1,0 +1,154 @@
+{include file="public/top" /}
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+
+        {include file="public/header" /}
+
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <!--面包屑导航-->
+                <div class="layui-card layadmin-header">
+                    <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                        <a href="{:url('index/index')}">主页</a><span lay-separator="">/</span>
+                        <a><cite>管理员列表</cite></a>
+                    </div>
+                </div>
+                <div class="layui-fluid">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+
+                            <table class="layui-hide" id="adminlist" lay-filter="adminlist"></table>
+                            <script type="text/html" id="adminAddBtn">
+                                <div class="layui-btn-container">
+                                  <a href="{:url('Admin/add')}" class="layui-btn layui-btn-sm">添加管理员</a>
+                                </div>
+                              </script>
+                              <script type="text/html" id="adminShow">
+                                {{#  if(d.id == 1){ }}
+                                <span>超级管理员</span>
+                                {{#  } else { }}
+                                <span>管理员</span>
+                                {{#  } }}
+                                </script>
+                                <script type="text/html" id="islock">
+                                    {{#  if(d.islock == 1){ }}
+                                    <span class="layui-badge">是</span>
+                                    {{#  } else { }}
+                                    <span class="layui-badge">否</span>
+                                    {{#  } }}
+                                    </script>
+                                <script type="text/html" id="adminBtn">
+                                    <a class="layui-btn layui-btn-xs" href="{:url('edit')}?id={{d.id}}">编辑</a>
+                                    {{#  if(d.id == 1){ }}
+                                      <a class="layui-btn layui-btn-disabled layui-btn-xs">删除</a>
+                                    {{#  } else { }}
+                                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="adminDel">删除</a>
+                                    {{#  } }}
+                                </script>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {include file="public/footer" /}
+    </div>
+    <script src="__LAYUI__/layui.js"></script>
+    <script src="__ADMIN__/js/main.js"></script>
+    <script>
+        var admin_del = "{:url('Admin/delete')}";
+        layui.use(['jquery','table','element'], function () {
+            var table = layui.table,$ = layui.jquery,element = layui.element;
+
+            table.render({
+                elem: '#adminlist',
+                url: "{:url('index')}",
+                method: 'post',
+                toolbar: '#adminAddBtn',
+                cols: [
+                    [{
+                        type: 'numbers',
+                        title: '序号',
+                        width: 80,
+                        align: 'center'
+                    }, {
+                        field: 'username',
+                        title: '用户名',
+                        align: 'center'
+                    }, {
+                        field: 'realname',
+                        title: '真实姓名',
+                        align: 'center'
+                    }, {
+                        field: 'email',
+                        title: '邮箱',
+                        align: 'center'
+                    }, {
+                        field: 'logintime',
+                        title: '最后登录时间',
+                        align: 'center',
+                        templet: function (d) {
+                            return stampToTime(d.logintime)
+                        }
+                    }, {
+                        field: 'islock',
+                        title: '是否锁定',
+                        align: 'center',
+                        width: 100,
+                        templet: '#islock'
+                    }, {
+                        field: 'jibie',
+                        title: '级别',
+                        width: 120,
+                        align: 'center',
+                        templet: '#adminShow',
+                        unresize: true
+                    }, {
+                        fixed: 'right',
+                        title: '操作',
+                        toolbar: '#adminBtn',
+                        align: 'center'
+                    }]
+                ],
+                page: true,
+                limits: [10, 20, 30],
+                limit: 10,
+                cellMinWidth: 80,
+                text: "对不起，加载出现异常！"
+            });
+
+
+            //监听工具条
+            table.on('tool(adminlist)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'adminDel') {
+                    layer.confirm('真的要删除' + data.username + '?', function (index) {
+                        $.ajax({
+                            type: "POST",
+                            url: admin_del,
+                            data: {"id": data.id},
+                            success: function (Data) {
+                                if (Data.status == 1) {
+                                    location.reload();
+                                    layer.msg("删除成功", {icon: 6});
+                                } else {
+                                    layer.msg("删除失败", {icon: 5});
+                                }
+                            },
+                            error: function () {
+                                alert("出现错误");
+                                return false;
+                            }
+                        }) //ajax结束
+                    });
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

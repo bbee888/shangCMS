@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理系统 - shangCMS</title>
+    <link rel="stylesheet" href="__LAYUI__/css/layui.css">
+    <link rel="stylesheet" href="__ADMIN__/css/style.css">
+    <script src="__ADMIN__/js/jquery.min.js"></script>
+    <style>
+        .layui-form-item .layui-input-inline {
+        width: 360px;
+    }
+
+    .layui-form-label {
+        width: 120px;
+    }
+</style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        {include file="public/header" /}
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <!--面包屑导航-->
+                <div class="layui-card layadmin-header">
+                    <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+                        <a href="{:url('index/index')}">主页</a><span lay-separator="">/</span>
+                        <a href="{:url('flink/index')}">友情链接</a><span lay-separator="">/</span>
+                        <a><cite>添加友情链接</cite></a>
+                    </div>
+                </div>
+                <div class="layui-fluid">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <h2>添加友情链接</h2>
+                        </div>
+                        <div class="layui-card-body" pad15>
+
+                            <form class="layui-form">
+                                {:token()}
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">网站名称</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                            placeholder="请输入网站名称" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">URL地址</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="url" lay-verify="url" autocomplete="off" placeholder="请输入链接地址http://开头"
+                                            class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">是否显示</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" checked id="status" value="1" name="status" lay-skin="switch"
+                                            lay-filter="status" lay-text="显示|不显示">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">备注</label>
+                                    <div class="layui-input-inline">
+                                        <textarea placeholder="请输入内容" name="description" class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn layui-btn-lg" lay-submit lay-filter="flinkAdd">立即提交</button>
+                                        <a href="{:url('Flink/index')}" class="layui-btn layui-btn-lg layui-btn-primary">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {include file="public/footer" /}
+    </div>
+    <script src="__LAYUI__/layui.js"></script>
+    <script src="__ADMIN__/js/main.js"></script>
+    <script>
+        var flink_add = "{:url('Flink/add')}";
+        var flink_index = "{:url('Flink/index')}";
+        layui.use(['jquery','form','element'], function () {
+            var form = layui.form,
+            $ = layui.$,
+            layer = layui.layer,
+            element = layui.element;
+
+            //自定义验证规则
+            form.verify({
+                title: function (value) {
+                    if (value.length < 4 || value.length > 20) {
+                        return '网站标题长度在4-20字符之间！';
+                    }
+                },
+                description: function (value) {
+                    if (value.length > 100) {
+                        return '备注不能大于100字符！';
+                    }
+                }
+            });
+
+            //监听指定开关
+            form.on('switch(status)', function (data) {
+                if (this.checked) {
+                    $('#status').val(1);
+                } else {
+                    $('#status').val(0);
+                }
+                layer.tips('是否在前台显示', data.othis)
+            });
+
+            form.on('submit(flinkAdd)', function (data) {
+                var $form = $(this).parents('form');
+                // var index = layer.load(2);
+                $.ajax({
+                    type: "POST",
+                    url: flink_add,
+                    data: $form.serialize(),
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg, {
+                                icon: 6
+                            }, function () {
+                                window.location.href = res.url;
+                            });
+                        } else {
+                            layer.msg(res.msg, {
+                                icon: 5
+                            }, function () {
+                                return false;
+                            });
+                        }
+                    },
+                    error: function (res) {
+                        layer.msg('服务器出错，请稍后重新操作！');
+                        return false;
+                    }
+                });
+                return false;
+            });
+
+
+            //监听提交
+            // form.on('submit(flinkAdd)', function (data) {
+            //     $.ajax({
+            //         type: "POST",
+            //         url: flink_add,
+            //         data: data,
+            //         type: JSON,
+            //         success: function (Data) {
+            //             if (Data.status == 1) {
+            //                 layer.msg("添加成功!", {icon: 6});
+            //             } else {
+            //                 layer.msg("添加失败!", {icon: 5});
+            //             }
+            //         },
+            //         error: function () {
+            //             // alert("出现错误");
+            //             layer.msg("出现错误");
+            //             return false;
+            //         }
+            //     })
+            //     return false;
+            // });
+
+        });
+    </script>
+
+</body>
+
+</html>
