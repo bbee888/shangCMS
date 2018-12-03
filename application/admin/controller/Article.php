@@ -33,10 +33,15 @@ class Article extends Common
         $count = $article->count();
         $articlelist = $article->where('1=1')->limit($start, $limit)->order('id desc')->select();
 
+        // 当前文章所属栏目
         foreach ($articlelist as $k => $v) {
             $articlelist[$k]['catname'] = $category->where('catid', $articlelist[$k]['catid'])->value('catname');
+            // 如果文章有缩略图，在标题后面显示图片小图标
+            if($articlelist[$k]['thumb'] != ""){
+                $articlelist[$k]['title'] = $articlelist[$k]['title']." <i class='layui-icon layui-icon-picture'></i>";
+            }
         }
-
+        
         //取得catname放进articlelist中
         if ($count >= 1 && $articlelist) {
             $code = 0;
@@ -60,9 +65,9 @@ class Article extends Common
         $article = new articleModel();
         if (request()->isPost()) {
             $params = input('post.');
-            $params['inputtime'] = time();
-            $params['updatetime'] = time();
-            $params['views'] = rand(10, 100); //文章点击数 给一个随机值
+            $params['create_time'] = time();
+            $params['update_time'] = time();
+            $params['views'] = rand(100, 1000); //文章点击数 给一个随机值
             $subCateCount = $category->where('pid', $params['catid'])->count();
             if ($subCateCount > 0) {
                 return json(['code' => 0, 'msg' => '父栏目不能添加文章，请重新选择栏目！', 'url' => '']);
@@ -105,7 +110,7 @@ class Article extends Common
         $this->assign('categorylist', $categorylist);
         if (request()->isPost()) {
             $params = input('post.');
-            $params['updatetime'] = time();
+            $params['update_time'] = time();
             $validate = \think\Loader::validate('Article');
             if (!$validate->scene('edit')->check($params)) {
                 $this->error($validate->getError());
@@ -140,6 +145,7 @@ class Article extends Common
             // }
         }
     }
+
 
     /**
      * 删除文章

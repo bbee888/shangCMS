@@ -41,22 +41,19 @@ class Flink extends Common
     public function add()
     {
         if (request()->isPost()) {
-            $status = input('status/d') ? input('status/d') : '0';
-            $data = [
-                'title' => input('title'),
-                'url' => input('url'),
-                'description' => input('description'),
-                'createtime' => time(),
-                'status' => $status,
-            ];
+            $params = input('post.');
+            $params['create_time'] = time();
+            $params['update_time'] = time();
+
+
             $validate = \think\Loader::validate('Flink');
-            if (!$validate->scene('add')->check($data)) {
+            if (!$validate->scene('add')->check($params)) {
                 $this->error($validate->getError());
                 die;
             }
 
             $flink = new flinkModel();
-            if ($flink->insert($data)) {
+            if ($flink->insert($params)) {
                 return json(['code' => 1, 'msg' => '友情链接添加成功！', 'url' => 'index']);
             } else {
                 return json(['code' => 0, 'msg' => '友情链接添加失败！', 'url' => '']);
@@ -81,23 +78,16 @@ class Flink extends Common
         $item = $flink->find($id);
         $this->assign('item', $item);
         if (request()->isPost()) {
-            $status = input('status/d') ? input('status/d') : '0';
-            $data = [
-                'id' => $id,
-                'title' => input('title'),
-                'url' => input('url'),
-                'description' => input('description'),
-                'createtime' => time(),
-                'status' => $status
-            ];
+            $params = input('post.');
+            $params['update_time'] = time();
 
             $validate = \think\Loader::validate('Flink');
-            if (!$validate->scene('edit')->check($data)) {
+            if (!$validate->scene('edit')->check($params)) {
                 $this->error($validate->getError());
                 die;
             }
 
-            if (false !== $flink->update($data)) {
+            if (false !== $flink->update($params)) {
                 return json(['code' => 1, 'msg' => '友情链接更新成功！', 'url' => 'index']);
             } else {
                 return json(['code' => 0, 'msg' => '友情链接更新失败！', 'url' => '']);

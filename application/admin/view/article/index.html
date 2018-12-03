@@ -97,7 +97,7 @@
                         align: 'center'
                     }, {
                         field: 'title',
-                        title: '文章名称'
+                        title: '文章标题',
                     },  {
                         field: 'catname',
                         title: '所属栏目',
@@ -116,12 +116,12 @@
                         align: 'center',
                         templet: '#status',
                     }, {
-                        field: 'updatetime',
+                        field: 'update_time',
                         title: '更新时间',
                         width: 200,
                         align: 'center',
                         templet: function (d) {
-                            return stampToTime(d.updatetime)
+                            return stampToTime(d.update_time)
                         }
                     }, {
                         title: '操作',

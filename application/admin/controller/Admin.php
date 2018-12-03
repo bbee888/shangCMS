@@ -41,7 +41,8 @@ class Admin extends Common
     {
         if (request()->isPost()) {
             $params = input('post.');
-            $params['createtime'] = time();
+            $params['create_time'] = time();
+            $params['update_time'] = time();
             $params['logintime'] = time();
             $params['loginip'] = $this->request->ip();
             $params['password'] = md5(md5($params['password']));
@@ -76,6 +77,7 @@ class Admin extends Common
         $this->assign('item', $item);
         if (request()->isPost()) {
             $params = input('post.');
+            $params['update_time'] = time();
 
             if ($params['newpassword']) {
                 $params['password'] = md5(md5($params['newpassword']));

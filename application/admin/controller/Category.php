@@ -62,7 +62,8 @@ class Category extends Common
         $category = new categoryModel();
         if (request()->isPost()) {
             $params = input('post.');
-            $params['createtime'] = time();
+            $params['create_time'] = time();
+            $params['update_time'] = time();
 
             $validate = \think\Loader::validate('Category');
             if (!$validate->scene('add')->check($params)) {
@@ -98,6 +99,7 @@ class Category extends Common
         $this->assign('categorylist', $categorylist);
         if (request()->isPost()) {
             $params = input('post.');
+            $params['update_time'] = time();
             if ($catid == $params['pid']) {
                 return json(['code' => 0, 'msg' => '不能选择自己为父栏目，请重新选择！', 'url' => '']);
             }

@@ -39,7 +39,7 @@
 												{volist name="pagelist" id="vo"}
 												<td class="hidden-xs">{$vo.catid}</td>
 												<td>{neq name="vo.level" value="0"}|{/neq}<?php echo str_repeat('-',$vo['level']*5)?> {$vo.catname}</td>
-												<td>{$vo.createtime|date='Y-m-d H:i:s',###}</td>
+												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
 												<td>
 													<div class="layui-inline">
 														<a href="{:url('category/add',['catid'=>$vo['catid'],'type'=>1])}" class="layui-btn layui-btn-xs">添加子栏目</a>

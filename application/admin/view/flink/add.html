@@ -99,8 +99,8 @@
             //自定义验证规则
             form.verify({
                 title: function (value) {
-                    if (value.length < 4 || value.length > 20) {
-                        return '网站标题长度在4-20字符之间！';
+                    if (value.length < 3 || value.length > 20) {
+                        return '网站标题长度在3-20字符之间！';
                     }
                 },
                 description: function (value) {
