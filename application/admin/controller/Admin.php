@@ -99,9 +99,9 @@ class Admin extends Common
         $admin = new adminModel();
         $res = $admin->where('id', $id)->delete();
         if ($res) {
-            return ['status' => 1, 'msg' => '删除成功'];
+            return ['code' => 1, 'msg' => '删除成功'];
         } else {
-            return ['status' => 0, 'msg' => '删除失败'];
+            return ['code' => 0, 'msg' => '删除失败'];
         }
     }
 }

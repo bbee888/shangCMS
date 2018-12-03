@@ -107,7 +107,7 @@ CREATE TABLE `shang_system` (
   `value` text,
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shang_system
@@ -128,6 +128,10 @@ INSERT INTO `shang_system` VALUES ('13', 'display_thumbh', '缩略图高度', ''
 INSERT INTO `shang_system` VALUES ('14', 'email_host', '邮箱服务器', '', '', '0', '0', '', '0');
 INSERT INTO `shang_system` VALUES ('15', 'email_port', '端口号', '', '', '0', '0', '25', '0');
 INSERT INTO `shang_system` VALUES ('16', 'email_username', '邮箱用户名', '', '', '0', '0', '', '0');
-INSERT INTO `shang_system` VALUES ('17', 'email_password', '邮箱授权码', '', '', '0', '0', '', '0');
-INSERT INTO `shang_system` VALUES ('18', 'email_fromemail', '发件人邮箱', '', '', '0', '0', '', '0');
-INSERT INTO `shang_system` VALUES ('19', 'email_fromuser', '发件人用户名', '', '', '0', '0', '', '0');
+INSERT INTO `shang_system` VALUES ('17', 'email_password', '邮箱密码', '', '', '0', '0', '', '0');
+INSERT INTO `shang_system` VALUES ('18', 'email_fromemail', '收件人邮箱', '', '', '0', '0', '', '0');
+INSERT INTO `shang_system` VALUES ('19', 'databases_path', '备份目录', '数据库备份路径,路径必须以 / 结尾', '', '0', '0', './public/data/', '0');
+INSERT INTO `shang_system` VALUES ('20', 'databases_size', '备份分卷大小', '用于限制压缩后的分卷最大长度。单位：B；建议设置20M', '', '0', '0', '20971520', '0');
+INSERT INTO `shang_system` VALUES ('21', 'databases_compress', '备份压缩开关', '压缩备份文件需要PHP环境支持gzopen,gzwrite函数', 'switch', '0', '0', '1', '0');
+INSERT INTO `shang_system` VALUES ('22', 'databases_level', '备份压缩级别', '数据库备份文件的压缩级别，该配置在开启压缩时生效', 'radio', '0', '0', '4', '0');
+

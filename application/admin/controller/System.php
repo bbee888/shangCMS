@@ -19,7 +19,7 @@ class System extends Common
 
 			foreach ($list as $key => $item) {
 				list($pk, $ck) = explode('_', $item['name']);
-				$slist[$pk][$ck] = ['name' => $item['name'], 'title' => $item['title'], 'tvalue' => $item['tvalue'], 'value' => $item['value'], 'remark' => $item['remark']];
+				$slist[$pk][$ck] = ['name' => $item['name'], 'title' => $item['title'], 'tvalue' => $item['tvalue'], 'value' => $item['value'], 'remark' => $item['remark'], 'groupid' => $item['groupid']];
 
 			}
 			// dump($slist);

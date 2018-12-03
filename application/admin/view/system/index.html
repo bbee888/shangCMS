@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="__ADMIN__/css/style.css">
   <script src="__ADMIN__/js/jquery.min.js"></script>
   <style>
-    .layui-form-label {
-      width: 120px;
+    .layui-form-pane .layui-form-label {
+      width: 150px;
     }
     .layui-form-item .layui-input-inline {
     width: 400px;
@@ -38,35 +38,53 @@
           <div class="layui-card">
             <div class="layui-card-body" pad15>
 
-                <form  class="layui-form layui-form-pane">
-                  <div class="layui-tab  layui-tab-brief">
-                    <ul class="layui-tab-title">
-                      <li class="layui-this">常规设置</li>
-                      <li>显示设置</li>
-                      <li>邮件服务器</li>
-                    </ul>
-                    <div class="layui-tab-content">
-                      {foreach name="slist" id="list" key="k"}
+              <form class="layui-form layui-form-pane">
+                <div class="layui-tab  layui-tab-brief">
+                  <ul class="layui-tab-title">
+                    <li class="layui-this">常规设置</li>
+                    <li>显示设置</li>
+                    <li>邮件服务器</li>
+                    <li>数据库</li>
+                  </ul>
+                  <div class="layui-tab-content">
+                    {foreach name="slist" id="list" key="k"}
 
-                      <div class="layui-tab-item {if condition="$k eq 'site'"}layui-show{/if}" id="{$k}">
-                        {volist name="$slist[$k]" id="vo"}
-                        {switch name="vo.tvalue"}
-                        {case value="radio"}
-                        <div class="layui-form-item">
-                          <label class="layui-form-label">{$vo.title}</label>
-                          <div class="layui-input-block">
-                              <input type="radio" name="{$vo.name}" value="0" title="否" {if condition="$vo.value eq 0"}checked{/if}>
-                              <input type="radio" name="{$vo.name}" value="1" title="是"  {if condition="$vo.value eq 1"}checked{/if}>
-                          </div>
-                        </div>
-                        {/case}
-                        {case value="textarea"}
-                        <div class="layui-form-item layui-form-text" style="width: 510px;">
+                    <div class="layui-tab-item {if condition=" $k eq 'site'"}layui-show{/if}" id="{$k}">
+                      {volist name="$slist[$k]" id="vo"}
+                      {switch name="vo.tvalue"}
+                      {case value="radio"}
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">{$vo.title}</label>
+                        <div class="layui-input-block">
+                          {if condition="$vo.groupid eq 1"}
+                          <input type="radio" name="{$vo.name}" value="0" title="否" {if condition="$vo.value eq 0"
+                            }checked{/if}> <input type="radio" name="{$vo.name}" value="1" title="是" {if condition="$vo.value eq 1"
+                            }checked{/if}> {elseif condition="$vo.groupid eq 4" /} <input type="radio" name="{$vo.name}"
+                            value="1" title="最低" {if condition="$vo.value eq 1" }checked{/if}> <input type="radio" name="{$vo.name}"
+                            value="4" title="一般" {if condition="$vo.value eq 4" }checked{/if}> <input type="radio" name="{$vo.name}"
+                            value="9" title="最高" {if condition="$vo.value eq 9" }checked{/if}> {/if} </div> </div> {/case}
+                            {case value="textarea" } <div class="layui-form-item layui-form-text" style="width: 510px;">
                           <label class="layui-form-label">{$vo.title}</label>
                           <div class="layui-input-block">
                             <textarea placeholder="请输入内容" name="{$vo.name}" class="layui-textarea">{$vo.value}</textarea>
                           </div>
                           {if condition="$vo['remark']"}<div class="layui-form-mid layui-word-aux">{$vo.remark}</div>{/if}
+                        </div>
+                        {/case}
+                        {case value="checkbox"}
+                        <div class="layui-form-item">
+                          <label class="layui-form-label">{$vo.title}</label>
+                          <div class="layui-input-inline">
+                              <select name="{$vo.name}" lay-filter="{$vo.name}">
+                                  {if condition='$vo.value eq 0'}
+                                  <option value="0" selected>关闭</option>
+                                  <option value="1">开启</option>
+                                  {else /}
+                                  <option value="1" selected>开启</option>
+                                  <option value="0">关闭</option>
+                                  {/if}
+                                </select>
+                            {if condition="$vo['remark']" }<div class="layui-form-mid layui-word-aux">{$vo.remark}</div>{/if}
                         </div>
                         {/case}
                         {default /}
@@ -84,11 +102,11 @@
                     </div>
                   </div>
 
-              <div class="layui-form-item">
-                <div class="layui-input-block">
-                  <button class="layui-btn"  lay-submit lay-filter="set_website">确认保存</button>
-                </div>
-              </div>
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit lay-filter="set_website">确认保存</button>
+                    </div>
+                  </div>
 
               </form>
 
@@ -97,57 +115,63 @@
 
           </div>
         </div>
+      </div>
+
+
+
+      {include file="public/footer" /}
     </div>
 
+    <script src="__LAYUI__/layui.js"></script>
+    <script src="__ADMIN__/js/main.js"></script>
+    <script>
+      var submit_url = "{:url('System/index')}";
+      //JavaScript代码区域
+      layui.use(['form', 'layer', 'element', 'jquery'], function () {
+        var layer = layui.layer,
+          element = layui.element,
+          form = layui.form,
+          $ = layui.$;
 
+        
 
-    {include file="public/footer" /}
-  </div>
+        //监听提交
+        form.on('submit(set_website)', function () {
+          var $form = $(this).parents('form');
+          var index = layer.load(2);
+          $.ajax({
+            type: "POST",
+            url: submit_url,
+            data: $form.serialize(),
+            dataType: 'json',
+            success: function (res) {
+              if (res.status == 1) {
+                layer.close(index);
+                layer.msg(res.msg, {
+                  icon: 6
+                }, function () {
+                  window.location.href = res.url;
+                });
+              } else {
+                layer.msg(res.msg, {
+                  icon: 5
+                }, function () {
+                  return false;
+                });
+              }
+            },
+            error: function (res) {
+              layer.close(index);
+              layer.msg('服务器出错，请稍后重新操作！');
+              return false;
+            }
+          });
+          return false;
 
-  <script src="__LAYUI__/layui.js"></script>
-  <script src="__ADMIN__/js/main.js"></script>
-  <script>
-    var submit_url = "{:url('System/index')}";
-    //JavaScript代码区域
-    layui.use(['form', 'layer','element','jquery'], function () {
-      var layer = layui.layer,
-      element = layui.element,
-        form = layui.form,$ = layui.$;
-
-
-      //监听提交
-      form.on('submit(set_website)', function () {
-        var $form = $(this).parents('form');
-        var index = layer.load(2);
-        $.ajax({
-          type: "POST",
-          url: submit_url,
-          data: $form.serialize(),
-          dataType: 'json',
-          success: function (res) {
-                        if (res.status == 1) {
-                            layer.close(index);
-                            layer.msg(res.msg, {icon: 6}, function () {
-                                window.location.href = res.url;
-                            });
-                        } else {
-                            layer.msg(res.msg, {icon: 5}, function () {
-                                return false;
-                            });
-                        }
-                    },
-                    error: function (res) {
-                        layer.close(index);
-                        layer.msg('服务器出错，请稍后重新操作！');
-                        return false;
-                    }
         });
-        return false;
 
       });
-
-    });
-  </script>
+    </script>
 </body>
 
 </html>

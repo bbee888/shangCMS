@@ -50,7 +50,7 @@
                             <table class="layui-hide" id="articlelist" lay-filter="articlelist"></table>
                             <script type="text/html" id="articleAddBtn">
                                 <div class="layui-btn-container">
-                                  <a href="{:url('Article/add')}" class="layui-btn">添加文章</a>
+                                  <a href="{:url('Article/add')}" class="layui-btn"><i class="layui-icon">&#xe608;</i>添加文章</a>
                                 </div>
                               </script>
                             <script type="text/html" id="articleBtn">
@@ -175,7 +175,7 @@
                                 "id": data.id
                             },
                             success: function (Data) {
-                                if (Data.status == 1) {
+                                if (Data.code == 1) {
                                     location.reload();
                                     layer.msg("删除成功", {
                                         icon: 6

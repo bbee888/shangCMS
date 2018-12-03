@@ -20,7 +20,7 @@
                             <table class="layui-hide" id="flinklist" lay-filter="flinklist"></table>
                             <script type="text/html" id="flinkAddBtn">
                                 <div class="layui-btn-container">
-                                  <a href="{:url('Flink/add')}" class="layui-btn layui-btn-sm">添加友情链接</a>
+                                  <a href="{:url('Flink/add')}" class="layui-btn"><i class="layui-icon">&#xe608;</i>添加友情链接</a>
                                 </div>
                               </script>
                             <script type="text/html" id="flinkBtn">
@@ -112,7 +112,7 @@
                             url: flink_del,
                             data: {"id": data.id},
                             success: function (res) {
-                                if (res.status == 1) {
+                                if (res.code == 1) {
                                     layer.close(index);
                                     location.reload();
                                     layer.msg("删除成功", {icon: 6});

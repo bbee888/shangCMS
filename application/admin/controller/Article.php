@@ -62,7 +62,7 @@ class Article extends Common
             $params = input('post.');
             $params['inputtime'] = time();
             $params['updatetime'] = time();
-            $params['views'] = rand(10, 100); //文章点击数
+            $params['views'] = rand(10, 100); //文章点击数 给一个随机值
             $subCateCount = $category->where('pid', $params['catid'])->count();
             if ($subCateCount > 0) {
                 return json(['code' => 0, 'msg' => '父栏目不能添加文章，请重新选择栏目！', 'url' => '']);
@@ -123,7 +123,7 @@ class Article extends Common
     }
 
     /*
-     * 更新点击数
+     * 更新点击数 文章首页更新点击数，不需要返回值
      *
      */
     public function views()
@@ -132,11 +132,12 @@ class Article extends Common
             $params = input('post.');
 
             $article = new articleModel();
-            if (false !== $article->save($params, ['id' => $params['id']])) {
-                return $this->success("更新成功");
-            } else {
-                return $this->error("更新失败");
-            }
+            $article->save($params, ['id' => $params['id']]);
+            // if (false !== $article->save($params, ['id' => $params['id']])) {
+            //     return $this->success("更新成功");
+            // } else {
+            //     return $this->error("更新失败");
+            // }
         }
     }
 
@@ -149,9 +150,9 @@ class Article extends Common
         $article = new articleModel();
         $res = $article->where('id', $id)->delete();
         if ($res) {
-            return ['status' => 1, 'msg' => '删除成功'];
+            return json(['code' => 1, 'msg' => '删除成功']);
         } else {
-            return ['status' => 0, 'msg' => '删除失败'];
+            return json(['code' => 0, 'msg' => '删除失败']);
         }
     }
 

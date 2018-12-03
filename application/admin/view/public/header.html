@@ -50,7 +50,14 @@
             <li class="layui-nav-item {if condition='$controller eq "article"'}layui-this{/if}"><a href="{:url('article/index')}"><i class="layui-icon layui-icon-read"></i> 文章管理</a></li>
             <li class="layui-nav-item {if condition='$controller eq "flink"'}layui-this{/if}"><a href="{:url('flink/index')}"><i class="layui-icon layui-icon-link"></i> 友情链接</a></li>
             <li class="layui-nav-item {if condition='$controller eq "admin"'}layui-this{/if}"><a href="{:url('admin/index')}"><i class="layui-icon layui-icon-user"></i> 管理员管理</a></li>
-            <li class="layui-nav-item {if condition='$controller eq "system"'}layui-this{/if}"><a href="{:url('System/index')}"><i class="layui-icon layui-icon-set"></i> 系统设置</a></li>
+            <!-- <li class="layui-nav-item {if condition='$controller eq "system"'}layui-this{/if}"><a href="{:url('System/index')}"><i class="layui-icon layui-icon-set"></i> 系统设置</a></li> -->
+            <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">系统功能<span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        <dd class="{if condition='$controller eq "system"'}layui-this{/if}"><a href="{:url('system/index')}"><i class="layui-icon layui-icon-set"></i> 系统设置</a></dd>
+                        <dd class="{if condition='$controller eq "database"'}layui-this{/if}"><a href="{:url('database/index')}"><i class="layui-icon layui-icon-snowflake"></i> 数据库管理</a></dd>
+                    </dl>
+                </li>
         </ul>
     </div>
 </div>

@@ -116,9 +116,9 @@ class Flink extends Common
         $flink = new flinkModel();
         $res = $flink->where('id', $id)->delete();
         if ($res) {
-            return json(['status' => 1, 'msg' => '删除成功']);
+            return json(['code' => 1, 'msg' => '删除成功']);
         } else {
-            return json(['status' => 0, 'msg' => '删除失败']);
+            return json(['code' => 0, 'msg' => '删除失败']);
         }
     }
 }

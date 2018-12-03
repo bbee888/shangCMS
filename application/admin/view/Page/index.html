@@ -85,7 +85,6 @@
 						That.removeClass('layui-btn-normal').addClass('layui-btn-warm').html('隐藏').attr('data-status', 2);
 					} else if(status == 2) {
 						That.removeClass('layui-btn-warm').addClass('layui-btn-normal').html('显示').attr('data-status', 1);
-
 					}
 				})
 
@@ -94,7 +93,7 @@
 			function del(id) {
         layer.confirm('你确定要删除单页面吗？', {icon: 3}, function (index) {
             $.post('{:url("page/delete")}', {catid: id}, function (data) {
-                if (data.status === 1) {
+                if (data.code === 1) {
                     location.reload();
 					layer.msg(data.msg, {icon: 6});
                 }else{

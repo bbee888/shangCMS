@@ -21,7 +21,7 @@
                             <table class="layui-hide" id="adminlist" lay-filter="adminlist"></table>
                             <script type="text/html" id="adminAddBtn">
                                 <div class="layui-btn-container">
-                                  <a href="{:url('Admin/add')}" class="layui-btn layui-btn-sm">添加管理员</a>
+                                  <a href="{:url('Admin/add')}" class="layui-btn"><i class="layui-icon">&#xe608;</i>添加管理员</a>
                                 </div>
                               </script>
                               <script type="text/html" id="adminShow">
@@ -131,7 +131,7 @@
                             url: admin_del,
                             data: {"id": data.id},
                             success: function (Data) {
-                                if (Data.status == 1) {
+                                if (Data.code == 1) {
                                     location.reload();
                                     layer.msg("删除成功", {icon: 6});
                                 } else {
@@ -139,7 +139,7 @@
                                 }
                             },
                             error: function () {
-                                alert("出现错误");
+                                layer.msg("出现错误");
                                 return false;
                             }
                         }) //ajax结束
