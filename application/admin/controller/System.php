@@ -34,10 +34,10 @@ class System extends Common
 				}
 			} catch (Exception $e) {
 
-				return json(['status' => 0, 'msg' => '更新操作异常，请稍后重试', 'url' => '']);
+				return json(['code' => 0, 'msg' => '更新操作异常，请稍后重试', 'url' => '']);
 			}
 
-			return json(['status' => 1, 'msg' => '更新成功', 'url' => '']);
+			return json(['code' => 1, 'msg' => '更新成功', 'url' => '']);
 		}
 	}
 

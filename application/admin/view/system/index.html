@@ -145,7 +145,7 @@
             data: $form.serialize(),
             dataType: 'json',
             success: function (res) {
-              if (res.status == 1) {
+              if (res.code == 1) {
                 layer.close(index);
                 layer.msg(res.msg, {
                   icon: 6

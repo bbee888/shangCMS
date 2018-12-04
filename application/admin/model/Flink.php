@@ -11,6 +11,9 @@ class Flink extends Model
 //        return request()->ip();
 //    }
 
+// 自动写入时间戳
+    protected $autoWriteTimestamp = true;
+
 
 
 

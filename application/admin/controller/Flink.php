@@ -42,8 +42,8 @@ class Flink extends Common
     {
         if (request()->isPost()) {
             $params = input('post.');
-            $params['create_time'] = time();
-            $params['update_time'] = time();
+            // $params['create_time'] = time();
+            // $params['update_time'] = time();
 
 
             $validate = \think\Loader::validate('Flink');
@@ -53,7 +53,7 @@ class Flink extends Common
             }
 
             $flink = new flinkModel();
-            if ($flink->insert($params)) {
+            if ($flink->save($params)) {
                 return json(['code' => 1, 'msg' => '友情链接添加成功！', 'url' => 'index']);
             } else {
                 return json(['code' => 0, 'msg' => '友情链接添加失败！', 'url' => '']);
@@ -71,9 +71,6 @@ class Flink extends Common
     public function edit()
     {
         $id = input('id/d');
-        if (!$id) {
-            return $this->error('编辑失败，无法获取到ID值！');
-        }
         $flink = new flinkModel();
         $item = $flink->find($id);
         $this->assign('item', $item);
@@ -87,7 +84,7 @@ class Flink extends Common
                 die;
             }
 
-            if (false !== $flink->update($params)) {
+            if ($flink->update($params)) {
                 return json(['code' => 1, 'msg' => '友情链接更新成功！', 'url' => 'index']);
             } else {
                 return json(['code' => 0, 'msg' => '友情链接更新失败！', 'url' => '']);

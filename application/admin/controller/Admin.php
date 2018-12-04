@@ -39,13 +39,14 @@ class Admin extends Common
      */
     public function add()
     {
+        $admin = new adminModel();
         if (request()->isPost()) {
             $params = input('post.');
             $params['create_time'] = time();
             $params['update_time'] = time();
             $params['logintime'] = time();
             $params['loginip'] = $this->request->ip();
-            $params['password'] = md5(md5($params['password']));
+            $params['password'] = $admin->setPasswordAttr($params['password']);
 
             $validate = \think\Loader::validate('Admin');
             if (!$validate->scene('add')->check($params)) {
@@ -53,7 +54,7 @@ class Admin extends Common
                 die;
             }
 
-            $admin = new adminModel();
+            
             if ($admin->insert($params)) {
                 return json(['code' => 1, 'msg' => '管理员添加成功！', 'url' => 'index']);
             } else {
@@ -80,7 +81,7 @@ class Admin extends Common
             $params['update_time'] = time();
 
             if ($params['newpassword']) {
-                $params['password'] = md5(md5($params['newpassword']));
+                $params['password'] = $admin->setPasswordAttr($params['newpassword']);
             }
 
             if (false !== $admin->update($params)) {

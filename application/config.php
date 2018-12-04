@@ -244,4 +244,12 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+    //邮箱配置
+    'email'   => [
+        'host'      => 'smtp.exmail.qq.com',
+        'port'      => 25,
+        'username'  => 'petct@ixingmu.com.cn',
+        'passwrod'  => 'petsend88',
+    ],
 ];
